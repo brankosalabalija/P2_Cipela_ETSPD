@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerMovemant : MonoBehaviour
 {
-    public Rigidbody2D rb;
     private float Horizontal;
     public int jumpForce = 18;
     public int speed = 5;
 
+    public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    public SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +31,24 @@ public class PlayerMovemant : MonoBehaviour
         {
             rb.velocity = Vector2.up * jumpForce; // dodavanje jacine skoka na igraca
         }
+
+        flip();
     }
 
     private bool IsGrounded ()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f , groundLayer);
+    }
+
+    private void flip ()
+    {
+        if (Horizontal < 0) // kretanje u levo
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else if (Horizontal > 0 ) // kretanje u desno
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 }
